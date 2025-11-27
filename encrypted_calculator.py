@@ -6,7 +6,6 @@ from concrete import fhe
 
 class EncryptedCalculator:
     def __init__(self):
-        # Safe default configuration
         self.config = fhe.Configuration(
             enable_unsafe_features=False,
             insecure_key_cache=False
@@ -24,7 +23,7 @@ class EncryptedCalculator:
         return self.circuit.decrypt(encrypted_value)
 
     # -----------------------------------------------
-    # Basic Math Operations (FHE SAFE)
+    # Basic Math Operations
     # -----------------------------------------------
     def add(self, a, b):
         return a + b
@@ -36,18 +35,16 @@ class EncryptedCalculator:
         return a * b
 
     # -----------------------------------------------
-    # Division (integer-friendly FHE approximation)
+    # Division (FHE approximation)
     # -----------------------------------------------
     def divide(self, a, b):
         if b == 0:
             raise ValueError("Cannot divide by zero.")
-
-        # Approximated reciprocal for FHE
         reciprocal = int(10000 / b)
         return (a * reciprocal) // 10000
 
     # -----------------------------------------------
-    # Power (Exponentiation)
+    # Exponentiation (Power)
     # -----------------------------------------------
     def power(self, base, exponent):
         result = 1
@@ -76,7 +73,7 @@ if __name__ == "__main__":
     sub_result = calc.decrypt(calc.subtract(ex, ey))
     mul_result = calc.decrypt(calc.multiply(ex, ey))
     div_result = calc.decrypt(calc.divide(ex, ey))
-    pow_result = calc.decrypt(calc.power(ex, 3))  # example: x³
+    pow_result = calc.decrypt(calc.power(ex, 3))
 
     print("➕ Add:", add_result)
     print("➖ Sub:", sub_result)
